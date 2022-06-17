@@ -24,6 +24,8 @@ module.exports = {
     // eslint-disable-next-line prettier/prettier
     // eslint-disable-next-line quote-props
     indent: ['error', 2],
+    'eslint-disable-next-line': 'off',
+    'quote-props': ['off', 'as-needed'],
     'prettier/prettier': 'error',
     'require-jsdoc': 'off',
     'max-len': ['warn', { code: 120 }],

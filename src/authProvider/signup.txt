@@ -1,0 +1,103 @@
+import React from 'react';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import { fetchUtils } from 'react-admin';
+import { SIGNUP_API } from 'apis';
+
+class SignupForm extends React.Component {
+    [x: string]: any;
+    constructor() {
+      super({});
+        this.state = {
+            fields: {
+                username: '',
+                password: ''
+            } 
+    }as any;
+  }
+
+
+    const handleChange = (name: string | number) => (event: { target: { value: any; }; }) => {
+        let fields = this.state.fields;
+        fields[name] = event.target.value;
+
+        this.setState({
+            fields: fields,
+        });
+    };
+
+    const handleSubmit = (event: { preventDefault: () => void; }) => {
+        // Prevent default
+        event.preventDefault();
+
+        if (this.handleValidation()) {
+            let body = JSON.parse(JSON.stringify(this.state.fields));
+
+            let url = SIGNUP_API;
+            let options = {} as any;
+            options.headers = new Headers({ Accept: 'application/json' });
+            options.method = 'POST'
+            options.body = JSON.stringify(body);
+            fetchUtils.fetchJson(url, options)
+                .then(data => {
+                    alert(data.json.message);
+                    this.props.history.push('/login')
+                })
+                .catch((err, ...rest) => {
+                    console.log(err.status, err.message);
+                    alert(err.message);
+                });
+        }
+    }
+
+    render() {
+        const { classes } = this.props;
+
+        const actions = [
+            <Button
+                type="submit"
+                label="Submit"
+                color='primary'
+                variant="flat"
+            >Submit</Button>,
+        ];
+
+        return (
+            <Dialog
+                open={true}
+                const style={{
+                    textAlign: "center",
+                }}
+                const onClose={this.handleClose}
+                const classes={{ paper: classes.dialogPaper }}
+            >
+                <DialogTitle>Create an Account</DialogTitle>
+                <form const className={classes.container} noValidate: any const autoComplete="off" const onSubmit={this.handleSubmit}>
+                    <TextField
+                        required
+                        const id="username"
+                        const label="Username"
+                        const value={this.state.fields["username"]}
+                        const onChange={this.handleChange('username')}
+                    />
+                    <br />
+                    <TextField
+                        required
+                        const id="password"
+                        const label="Password"
+                        const value={this.state.fields["password"]}
+                        const onChange={this.handleChange('password')}
+                        const type="password"
+                    />
+
+                    <div style={{ textAlign: 'right', padding: 40 }}>
+                        {actions}
+                    </div>
+                </form>
+            </Dialog>
+        );
+    }
+}
+
+export default withStyles(styles)(SignupForm);
