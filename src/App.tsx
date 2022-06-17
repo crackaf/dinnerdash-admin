@@ -1,5 +1,5 @@
 import React from 'react';
-import { fetchUtils, Admin, Resource, ShowGuesser, CustomRoutes, Options } from 'react-admin';
+import { fetchUtils, Admin, Resource, ShowGuesser, CustomRoutes, Options, ListGuesser, EditGuesser } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 import { SERVER_URL } from 'apis';
 import authProvider from 'authProvider';
@@ -8,6 +8,7 @@ import routes from 'routes';
 import { OfferingEdit, OfferingList, OfferingCreate } from 'offerings';
 import { RestaurantEdit, RestaurantList } from 'restaurants';
 import { CustomerEdit, CustomerList } from 'customers';
+import { OrderCreate, OrderEdit, OrderList } from 'orders';
 
 const fetchJson = (url: any, options: Options = {}) => {
   const header = new Headers();
@@ -34,6 +35,7 @@ function App() {
   return (
     <Admin authProvider={authProvider} dataProvider={dataProvider}>
       <Resource name="customers" list={CustomerList} edit={CustomerEdit} show={ShowGuesser} />
+      <Resource name="orders" list={OrderList} edit={OrderEdit} show={ShowGuesser} />
       <Resource name="offerings" create={OfferingCreate} list={OfferingList} edit={OfferingEdit} show={ShowGuesser} />
       <Resource name="restaurants" list={RestaurantList} edit={RestaurantEdit} show={ShowGuesser} />
 
